@@ -1,6 +1,9 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -10,9 +13,12 @@ public class CreditCalculatorTest {
     double overpaymentCalculation = 0;
     double calculatingTotalRefund;
     double monthlyPaymentCalculation;
+    double[] expected;
+     Main main = new Main();
 
     @BeforeEach
     void createNewClass() {
+
         double outstandingBalance = creditAmount;
         int dayInMonth = 31;
         int dayInYear = 365;
@@ -24,27 +30,25 @@ public class CreditCalculatorTest {
         }
         calculatingTotalRefund = overpaymentCalculation + creditAmount;
         monthlyPaymentCalculation = calculatingTotalRefund / month;
-    }
-
-    @Test
-    void TestMonthlyPaymentCalculation() {
-        double extend = monthlyPaymentCalculation;
-
-        assertEquals(extend, Main.monthlyPaymentCalculation());
+        expected = new double[]{overpaymentCalculation, calculatingTotalRefund, monthlyPaymentCalculation};
 
     }
 
     @Test
-    void TestCalculatingTotalRefund() {
-        double extend = calculatingTotalRefund;
-        assertEquals(extend, Main.calculatingTotalRefund(creditAmount));
+    void TestLengthArray() {
+
+        assertEquals(3, main.resultCreditCalculator(creditAmount, month).length);
     }
 
     @Test
-    void TestOverpaymentCalculation() {
-
-        double expected = overpaymentCalculation;
-        assertEquals(expected, Main.overpaymentCalculation(creditAmount, month));
+    void TestResultCreditCalculator() {
+        assertArrayEquals(expected, main.resultCreditCalculator(creditAmount, month), 1e-2);
     }
 
+    @Test
+    void TestParametersForCalculation() {
+        System.setIn(new ByteArrayInputStream("200000".getBytes()));
+        assertEquals(200000, main.ParametersForCalculation());
+
+    }
 }
